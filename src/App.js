@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -8,12 +7,6 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import { Container } from "@material-ui/core";
 import { SearchKit } from "./SearchKit";
 import FacebookLogin from "react-facebook-login";
@@ -62,7 +55,12 @@ function App() {
           {Object.keys(data).length > 0 ? (
             <div>
               Hello, {data.name}!{" "}
-              <Button color="inherit" onClick={handleLogout}>
+              <Button
+                color="secondary"
+                variant="contained"
+                size="small"
+                onClick={handleLogout}
+              >
                 Đăng xuất
               </Button>
             </div>
