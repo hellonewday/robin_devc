@@ -2,6 +2,22 @@
   text-align: center;
 }
 
+body {
+  background-color: black;
+}
+
+.form {
+  height: fit-content;
+  padding: 20px;
+  position: absolute;
+  /* right: 40%; */
+  top: 15%;
+  left: 50%;
+  min-width: 480px;
+  background: white;
+  text-align: center;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -35,4 +51,9 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.route-link {
+  color: white !important;
+  text-decoration: none;
 }
