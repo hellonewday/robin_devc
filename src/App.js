@@ -3,13 +3,8 @@ import "./App.css";
 import Header from "./components/home/Header";
 import SearchContainer from "./components/home/SearchContainer";
 import FilmList from "./components/home/FilmList";
-
-
-
 function App() {
   const [data, setData] = React.useState({});
-
-
 
   const handleLogout = () => {
     window.localStorage.removeItem("logged");

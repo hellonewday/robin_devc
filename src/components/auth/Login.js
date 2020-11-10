@@ -91,7 +91,7 @@ function Login(props) {
           <p>
             Bạn chưa có tài khoản?{" "}
             <b
-              style={{ color: "rgba(159, 6, 18, 1)" }}
+              style={{ color: "rgba(159, 6, 18, 1)", cursor: "pointer" }}
               onClick={handleClickOpen}
             >
               Đăng ký ngay
@@ -222,7 +222,7 @@ function Login(props) {
                       ).then((response) => {
                         if (response === null) {
                           handleRedirect();
-                        }
+                        } else alert("Next Component");
                       });
                     }}
                   >

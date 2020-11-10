@@ -9,18 +9,16 @@ CREATE TABLE User(
 );
 
 CREATE TABLE Film(
-	show_id int not null primary key,
-    type enum("TV Show","Movie"),
-    title varchar(255),
-    director varchar(255),
-    country varchar(255),
-    date_added varchar(255),
-    release_year int,
-    cast varchar(255),
-    rating varchar(255),
-    duration varchar(255),
-    listed_in varchar(255),
-    description varchar(255)
+	id int not null primary key,
+    certificate enum("R","G","PG-13","Approved"),
+    titles varchar(255),
+    titlesVN varchar(255),
+	runtime varchar(255),
+    genre varchar(255),
+    rates numeric(9,1),
+    directors varchar(255),
+    images varchar(255),
+    releaseYear int
 );
 
 CREATE TABLE watchedFilm(
@@ -28,7 +26,7 @@ CREATE TABLE watchedFilm(
     film int, 
     time_watched timestamp default NOW(),
     foreign key (user) references User(uid) on delete cascade,
-    foreign key (film) references Film(show_id)
+    foreign key (film) references Film(id)
 );
 
 CREATE TABLE Favorite(
@@ -44,7 +42,6 @@ CREATE TABLE searchResult(
 );
 
 CREATE TABLE Subscription(
-	sub_id int not null auto_increment primary key,
     user int,
     duration int,
     type varchar(255),
