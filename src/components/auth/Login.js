@@ -25,7 +25,7 @@ import { Redirect } from "react-router-dom";
 function Login(props) {
   const [open, setOpen] = useState(false);
   const [redirect, setRedirect] = useState(false);
-
+  const [registerData, setRegData] = useState({});
   const handleClose = () => {
     setOpen(false);
   };
@@ -36,6 +36,15 @@ function Login(props) {
 
   const handleClickOpen = () => {
     setOpen(true);
+  };
+
+  const handleChange = (event) => {
+    setRegData({ ...registerData, [event.target.name]: event.target.value });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(registerData);
   };
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -121,6 +130,8 @@ function Login(props) {
                   <Grid item xs={12} lg={6}>
                     <TextField
                       label="Họ tên"
+                      name="fullname"
+                      onChange={handleChange}
                       style={{ width: "80%" }}
                       variant="outlined"
                     />
@@ -129,7 +140,9 @@ function Login(props) {
                     <TextField
                       label="Tuổi"
                       variant="outlined"
+                      name="age"
                       type="number"
+                      onChange={handleChange}
                       style={{ width: "40%" }}
                     />
                     <FormControl
@@ -140,15 +153,16 @@ function Login(props) {
                       <RadioGroup
                         style={{ display: "flex", flexDirection: "row" }}
                         name="gender"
-                        value="female"
+                        value={registerData.gender || "Female"}
+                        onChange={handleChange}
                       >
                         <FormControlLabel
-                          value="female"
+                          value="Female"
                           control={<Radio />}
                           label="Female"
                         />
                         <FormControlLabel
-                          value="male"
+                          value="Male"
                           control={<Radio />}
                           label="Male"
                         />
@@ -156,16 +170,11 @@ function Login(props) {
                     </FormControl>
                     <br />
                     <br />
-                    <TextField
-                      label="Số điện thoại"
-                      type="text"
-                      style={{ width: "80%" }}
-                      variant="outlined"
-                    />
-                    <br />
-                    <br />
+
                     <TextField
                       label="Email"
+                      name="email"
+                      onChange={handleChange}
                       style={{ width: "80%" }}
                       type="email"
                       variant="outlined"
@@ -177,13 +186,17 @@ function Login(props) {
                     <TextField
                       label="Tên đăng nhập"
                       style={{ width: "80%" }}
+                      name="username"
+                      onChange={handleChange}
                       variant="outlined"
                     />
                     <br />
                     <br />
                     <TextField
                       label="Mật khẩu"
+                      name="password"
                       type="password"
+                      onChange={handleChange}
                       style={{ width: "80%" }}
                       variant="outlined"
                     />
@@ -211,20 +224,7 @@ function Login(props) {
                       backgroundColor: "#E30813",
                       color: "white",
                     }}
-                    onClick={() => {
-                      swal(
-                        "Horray!",
-                        "Chúc mừng bạn đã đăng ký thành công! Tiếp tục chọn loại phim bạn yêu thích nào!",
-                        "success",
-                        {
-                          buttons: ["Thôi", "Tiếp tục"],
-                        }
-                      ).then((response) => {
-                        if (response === null) {
-                          handleRedirect();
-                        } else alert("Next Component");
-                      });
-                    }}
+                    onClick={handleSubmit}
                   >
                     Đăng ký
                   </Button>

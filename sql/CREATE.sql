@@ -1,5 +1,5 @@
 CREATE TABLE User(
-	uid int not null primary key,
+	uid int not null primary key auto_increment,
     username varchar(255),
     password varchar(255),
     gender enum("Male","Female"),

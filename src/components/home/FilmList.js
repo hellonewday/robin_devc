@@ -1,9 +1,13 @@
-import { Container, Grid, Typography } from "@material-ui/core";
+import { Container, Dialog, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import { fetchFilms } from "../redux/actions/films";
 import { connect } from "react-redux";
-
+import Film from "./Film";
 class FilmList extends React.Component {
+  state = {
+    open: false,
+    id: null,
+  };
   componentDidMount() {
     this.props.fetchFilms();
   }
@@ -35,6 +39,7 @@ class FilmList extends React.Component {
                       alt={item.Title}
                     />
                     <Typography
+                      onClick={() => this.setState({ open: true, id: item.id })}
                       variant="h5"
                       style={{
                         color: "#E35708",
@@ -53,6 +58,12 @@ class FilmList extends React.Component {
             )}
           </Grid>
         </Container>
+        <Dialog
+          open={this.state.open}
+          onClose={() => this.setState({ open: false })}
+        >
+          <Film id={this.state.id} />
+        </Dialog>
       </div>
     );
   }

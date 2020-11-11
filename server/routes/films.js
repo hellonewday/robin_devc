@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { connection } = require("../connection");
+const connection = require("../connection");
 
 router.get("/", (req, res) => {
   connection.query("SELECT * FROM Film", (error, results) => {

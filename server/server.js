@@ -8,7 +8,11 @@ const films = require("./routes/films");
 
 app.use(
   cors({
-    origin: ["https://localhost:3000", "http://localhost:3000"],
+    origin: [
+      "https://localhost:3000",
+      "http://localhost:3000",
+      "https://donobox.me/robin_devc/",
+    ],
   })
 );
 app.use(express.urlencoded({ extended: true }));
