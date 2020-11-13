@@ -1,45 +1,28 @@
-const data = [
+const stories = [
   {
     id: 1,
-    title: "Hello From East Wangshington",
+    name: "Story 1",
+    views: 34,
   },
   {
     id: 2,
-    title: "Passenger",
+    name: "Story 2",
+    views: 14,
   },
   {
     id: 3,
-    title: "Rota 2",
+    name: "My new story",
+    views: 21,
   },
   {
     id: 4,
-    title: "Hello World",
-  },
-  {
-    id: 5,
-    title: "Pass me by the car",
+    name: "My worst one",
+    views: 454,
   },
 ];
 
-let query = "rO";
-
-let transformData = data.map((item) => {
-  return { id: item.id, title: item.title.toLocaleLowerCase() };
-});
-
-let transformQuery = query.toLowerCase();
-
-function search(q, td, d) {
-  let searchResult = td.filter((item) => {
-    return item.title.includes(q);
-  });
-
-  return searchResult.map((item) => {
-    return {
-      id: item.id,
-      title: item.title.toLocaleUppercase(),
-    };
-  });
-}
-
-console.log(search(transformQuery, transformData, data));
+console.log(
+  stories.sort((item1, item2) => {
+    return item2.views - item1.views;
+  })
+);

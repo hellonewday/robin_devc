@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import Header from "./components/home/Header";
 import SearchContainer from "./components/home/SearchContainer";
 import FilmList from "./components/home/FilmList";
-function App() {
+function App({ props }) {
   const [data, setData] = React.useState({});
-
+  useEffect(() => {
+    console.log(props);
+  }, []);
   const handleLogout = () => {
     window.localStorage.removeItem("logged");
     window.location.reload();
@@ -22,6 +24,7 @@ function App() {
     <div style={{ background: "black" }}>
       <Header
         data={data}
+        logged={""}
         handleLogout={handleLogout}
         response={responseFacebook}
       />

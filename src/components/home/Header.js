@@ -7,7 +7,7 @@ import { Container, Grid, TextField } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { Link } from "react-router-dom";
 
-function Header({ data, handleLogout }) {
+function Header({ data, handleLogout,logged }) {
   return (
     <AppBar style={{ backgroundColor: "#000000" }} position="static">
       <Container fixed>
@@ -47,9 +47,9 @@ function Header({ data, handleLogout }) {
               />
             </Grid>
             <Grid item xs={2} style={{ position: "absolute", right: 0 }}>
-              {Object.keys(data).length > 0 ? (
+              {logged ? (
                 <div>
-                  Hello, {data.name}!{" "}
+                  Hello, {logged}!{" "}
                   <Button
                     color="secondary"
                     variant="contained"

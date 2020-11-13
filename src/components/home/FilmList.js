@@ -3,6 +3,7 @@ import React from "react";
 import { fetchFilms } from "../redux/actions/films";
 import { connect } from "react-redux";
 import Film from "./Film";
+import { getFilmsFromState } from "../redux/selectors/films";
 class FilmList extends React.Component {
   state = {
     open: false,
@@ -12,9 +13,8 @@ class FilmList extends React.Component {
     this.props.fetchFilms();
   }
   render() {
-    if (this.props.films.data) {
+    if (this.props) {
       console.log("Yes");
-      console.log(this.props.films.data);
     } else console.log("No");
     return (
       <div style={{ paddingTop: 100 }}>
@@ -23,8 +23,8 @@ class FilmList extends React.Component {
             Most Watched
           </Typography>
           <Grid container spacing={2}>
-            {this.props.films.data ? (
-              this.props.films.data.data.map((item) => {
+            {this.props.films ? (
+              this.props.films.map((item) => {
                 return (
                   <Grid
                     item
@@ -70,7 +70,7 @@ class FilmList extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  films: state.films,
+  films: getFilmsFromState(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

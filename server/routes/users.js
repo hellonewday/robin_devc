@@ -5,7 +5,10 @@ const jwt = require("jsonwebtoken");
 router.get("/", (req, res) => {
   connection.query("SELECT * FROM User", (error, results) => {
     if (error) return res.status(400).json({ success: false, error });
-    else return res.status(200).json({ success: true, data: results });
+    else
+      return res
+        .status(200)
+        .json({ success: true, counts: results.length, data: results });
   });
 });
 
@@ -43,7 +46,12 @@ router.post("/login", (req, res) => {
   connection.query(
     `SELECT * FROM User WHERE username = '${username}'`,
     (error, result) => {
+      // console.log(result);
       if (error) return res.status(400).json({ success: false, error });
+      else if (result.length === 0)
+        return res
+          .status(404)
+          .json({ success: false, message: "Login failed" });
       else {
         bcrypt.compare(password, result[0].password, (error, success) => {
           if (error) return res.status(400).json({ success: false, error });

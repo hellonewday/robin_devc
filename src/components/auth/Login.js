@@ -1,17 +1,9 @@
 import {
   Button,
   Dialog,
-  DialogContent,
-  DialogContentText,
   FormControl,
-  FormControlLabel,
-  FormLabel,
-  Grid,
   IconButton,
-  Radio,
-  RadioGroup,
   TextField,
-  Typography,
 } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -19,39 +11,43 @@ import React, { useState } from "react";
 import image from "../../images/Group 78.png";
 import google from "../../images/image 7.png";
 import facebook from "../../images/image 8.png";
-import swal from "sweetalert";
 import { Redirect } from "react-router-dom";
+import Register from "./Register";
+import { requestLogin } from "../redux/actions/auth";
+import { useDispatch, useSelector } from "react-redux";
 
 function Login(props) {
   const [open, setOpen] = useState(false);
-  const [redirect, setRedirect] = useState(false);
-  const [registerData, setRegData] = useState({});
+  const [loginData, setLogData] = useState({});
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleRedirect = () => {
-    setRedirect(true);
-  };
+  const login = useSelector((state) => state.users);
+
+  const dispatch = useDispatch();
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleChange = (event) => {
-    setRegData({ ...registerData, [event.target.name]: event.target.value });
+    setLogData({ ...loginData, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(registerData);
+    console.log(loginData);
+    dispatch(requestLogin(loginData));
   };
+
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  if (redirect) {
+  if (login.loginResponse.success) {
     return <Redirect to="/" />;
   }
+
   return (
     <div style={{ display: "flex" }}>
       <div className="image">
@@ -69,11 +65,22 @@ function Login(props) {
         </h1>
         <div style={{ padding: "0px 70px", textAlign: "center" }}>
           <FormControl fullWidth style={{ marginBottom: 10 }}>
-            <TextField label="Tên đăng nhập" variant="outlined" />
+            <TextField
+              label="Tên đăng nhập"
+              variant="outlined"
+              name="username"
+              onChange={handleChange}
+            />
           </FormControl>
           <br />
           <FormControl fullWidth style={{ marginBottom: 10 }}>
-            <TextField label="Mật khẩu" variant="outlined" />
+            <TextField
+              label="Mật khẩu"
+              name="password"
+              type="password"
+              variant="outlined"
+              onChange={handleChange}
+            />
           </FormControl>
           <Button
             variant="contained"
@@ -86,17 +93,11 @@ function Login(props) {
               backgroundColor: "#E30813",
               color: "white",
             }}
-            onClick={() => {
-              swal(
-                "Oh...no!",
-                "Thông tin tài khoản đăng nhập không trùng khớp",
-                "error"
-              );
-            }}
+            onClick={handleSubmit}
           >
             Đăng nhập
           </Button>
-
+          <p>{login.loginResponse.success ? "Xong" : "Loading"}</p>
           <p>
             Bạn chưa có tài khoản?{" "}
             <b
@@ -113,146 +114,7 @@ function Login(props) {
             maxWidth="lg"
             onClose={handleClose}
           >
-            <DialogContent>
-              <DialogContentText>
-                <Typography
-                  variant="h3"
-                  style={{
-                    color: "rgba(208, 1, 27, 1)",
-                    fontFamily: "'Rock Salt',cursive",
-                    marginBottom: 40,
-                    textAlign: "center",
-                  }}
-                >
-                  Robin
-                </Typography>
-                <Grid container spacing={1}>
-                  <Grid item xs={12} lg={6}>
-                    <TextField
-                      label="Họ tên"
-                      name="fullname"
-                      onChange={handleChange}
-                      style={{ width: "80%" }}
-                      variant="outlined"
-                    />
-                    <br />
-                    <br />
-                    <TextField
-                      label="Tuổi"
-                      variant="outlined"
-                      name="age"
-                      type="number"
-                      onChange={handleChange}
-                      style={{ width: "40%" }}
-                    />
-                    <FormControl
-                      component="fieldset"
-                      style={{ marginLeft: 20 }}
-                    >
-                      <FormLabel component="legend">Giới tính</FormLabel>
-                      <RadioGroup
-                        style={{ display: "flex", flexDirection: "row" }}
-                        name="gender"
-                        value={registerData.gender || "Female"}
-                        onChange={handleChange}
-                      >
-                        <FormControlLabel
-                          value="Female"
-                          control={<Radio />}
-                          label="Female"
-                        />
-                        <FormControlLabel
-                          value="Male"
-                          control={<Radio />}
-                          label="Male"
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                    <br />
-                    <br />
-
-                    <TextField
-                      label="Email"
-                      name="email"
-                      onChange={handleChange}
-                      style={{ width: "80%" }}
-                      type="email"
-                      variant="outlined"
-                    />
-                    <br />
-                    <br />
-                  </Grid>
-                  <Grid item xs={12} lg={6}>
-                    <TextField
-                      label="Tên đăng nhập"
-                      style={{ width: "80%" }}
-                      name="username"
-                      onChange={handleChange}
-                      variant="outlined"
-                    />
-                    <br />
-                    <br />
-                    <TextField
-                      label="Mật khẩu"
-                      name="password"
-                      type="password"
-                      onChange={handleChange}
-                      style={{ width: "80%" }}
-                      variant="outlined"
-                    />
-                    <br />
-                    <br />{" "}
-                    <TextField
-                      label="Nhập lại mật khẩu"
-                      type="password"
-                      style={{ width: "80%" }}
-                      variant="outlined"
-                    />
-                    <br />
-                    <br />
-                  </Grid>
-                </Grid>
-                <div style={{ textAlign: "center" }}>
-                  <Button
-                    variant="contained"
-                    style={{
-                      margin: 30,
-                      padding: "14px 50px",
-                      borderRadius: 30,
-                      textDecoration: "none",
-                      fontWeight: 600,
-                      backgroundColor: "#E30813",
-                      color: "white",
-                    }}
-                    onClick={handleSubmit}
-                  >
-                    Đăng ký
-                  </Button>
-                  <p>
-                    Bạn đã có tài khoản?{" "}
-                    <b
-                      style={{ color: "rgba(159, 6, 18, 1)" }}
-                      onClick={handleClose}
-                    >
-                      Đăng nhập ngay
-                    </b>
-                  </p>
-                  <p>Hoặc đăng ký với:</p>
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <IconButton>
-                      <img src={google} alt="google" style={{ margin: 2 }} />
-                    </IconButton>
-                    <IconButton>
-                      <img
-                        src={facebook}
-                        alt="facebook"
-                        style={{ margin: 2 }}
-                      />
-                    </IconButton>{" "}
-                  </div>
-                </div>
-              </DialogContentText>
-            </DialogContent>
+            <Register handleClose={handleClose} />
           </Dialog>
           <p>Hoặc đăng nhập với:</p>
           <div style={{ display: "flex", justifyContent: "center" }}>

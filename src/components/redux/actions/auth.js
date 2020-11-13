@@ -12,10 +12,10 @@ export const requestRegister = (data) => {
   };
 };
 
-export const responseRegister = (status) => {
+export const responseRegister = (response) => {
   return {
     type: REGISTER_USER_SUCCESS,
-    status,
+    response,
   };
 };
 
@@ -26,9 +26,9 @@ export const requestLogin = (data) => {
   };
 };
 
-export const responseLogin = (status) => {
+export const responseLogin = (response) => {
   return {
     type: VALIDATE_USER_SUCCESS,
-    status,
+    response,
   };
 };
