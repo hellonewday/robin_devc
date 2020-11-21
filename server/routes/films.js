@@ -17,4 +17,15 @@ router.get("/:id", (req, res) => {
     }
   );
 });
+
+router.post("/watched/:id", (req, res) => {
+  connection.query(
+    `INSERT INTO watchedFilm values (${req.body.user},${req.params.id},${req.body.rating})`,
+    (error, response) => {
+      if (error) return res.status(400).json({ success: false, error });
+      else return res.status(200).json({ success: true, response });
+    }
+  );
+});
+
 module.exports = router;

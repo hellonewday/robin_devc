@@ -1,4 +1,4 @@
-import { put, call, takeEvery } from "redux-saga/effects";
+import { put, call, takeLatest } from "redux-saga/effects";
 import { responseLogin, responseRegister } from "../actions/auth";
 import { fetchLogin, fetchRegister } from "../api/users";
 import { VALIDATE_USER, REGISTER_USER } from "../actions/types";
@@ -25,9 +25,9 @@ function* fetchSagaRegister(action) {
 }
 
 export function* watchFetchLogin() {
-  yield takeEvery(VALIDATE_USER, fetchSagaLogin);
+  yield takeLatest(VALIDATE_USER, fetchSagaLogin);
 }
 
 export function* watchFetchRegister() {
-  yield takeEvery(REGISTER_USER, fetchSagaRegister);
+  yield takeLatest(REGISTER_USER, fetchSagaRegister);
 }

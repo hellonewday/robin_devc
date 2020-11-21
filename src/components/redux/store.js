@@ -3,14 +3,27 @@ import { createStore, applyMiddleware, compose } from "redux";
 import createSagaNiddleware from "redux-saga";
 import rootSagas from "./sagas/index";
 import rootReducer from "./reducers/index";
+import storage from "redux-persist/lib/storage";
+import { persistStore, persistReducer } from "redux-persist";
+
 const middleware = createSagaNiddleware();
 
-export default createStore(
-  rootReducer,
+const persistConfig = {
+  key: "root",
+  storage,
+  blacklist: ["users"],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = createStore(
+  persistedReducer,
   compose(
     applyMiddleware(middleware),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 );
+
+export const persistor = persistStore(store);
 
 middleware.run(rootSagas);

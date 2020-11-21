@@ -1,5 +1,5 @@
 CREATE TABLE User(
-	uid int not null primary key auto_increment,
+	uid int not null primary key,
     username varchar(255),
     password varchar(255),
     gender enum("Male","Female"),
@@ -22,6 +22,7 @@ CREATE TABLE Film(
 );
 
 CREATE TABLE watchedFilm(
+
 	user int,
     film int, 
     time_watched timestamp default NOW(),
