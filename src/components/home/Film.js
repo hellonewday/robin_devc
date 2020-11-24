@@ -29,7 +29,7 @@ const Film = ({ id }) => {
         rating: newValue,
       })
         .then((response) => {
-          console.log(response.data);
+          alert(response.data.message);
           setRate(newValue);
         })
         .catch((error) => {
