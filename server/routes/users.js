@@ -40,6 +40,35 @@ router.post("/", (req, res) => {
   });
 });
 
+router.post("/facebook", (req, res) => {
+  let { email } = req.body;
+  connection.query(
+    `SELECT * FROM User Where email = '${email}'`,
+    (error, result) => {
+      if (error) return res.status(400).json({ success: false, error });
+      else if (result.length === 0)
+        return res
+          .status(404)
+          .json({ message: "No data for this facebook", success: false });
+      else {
+        let token = jwt.sign(
+          { id: result[0].uid, username: result[0].username },
+          "s3cr4t",
+          {
+            expiresIn: "7d",
+          }
+        );
+        return res.status(200).json({
+          success: true,
+          header: `Bearer ${token}`,
+          id: result[0].uid,
+          username: result[0].username,
+        });
+      }
+    }
+  );
+});
+
 router.post("/login", (req, res) => {
   let { username, password } = req.body;
 
@@ -63,9 +92,12 @@ router.post("/login", (req, res) => {
                 expiresIn: "7d",
               }
             );
-            return res
-              .status(200)
-              .json({ success: true, header: `Bearer ${token}` });
+            return res.status(200).json({
+              success: true,
+              header: `Bearer ${token}`,
+              id: result[0].uid,
+              username: result[0].username,
+            });
           }
         });
       }

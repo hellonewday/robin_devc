@@ -6,19 +6,18 @@ import {
   FormControlLabel,
   FormLabel,
   Grid,
-  IconButton,
   Radio,
   RadioGroup,
   TextField,
   Typography,
 } from "@material-ui/core";
-import google from "../../images/image 7.png";
 import facebook from "../../images/image 8.png";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { requestRegister } from "../redux/actions/auth";
 import { Redirect } from "react-router-dom";
 import swal from "sweetalert";
+import ReactFacebookLogin from "react-facebook-login";
 function Register({ handleClose }) {
   const [registerData, setRegisterData] = useState({});
 
@@ -38,6 +37,15 @@ function Register({ handleClose }) {
     event.preventDefault();
     dispatch(requestRegister(registerData));
     console.log(registerData);
+  };
+
+  const responseFacebook = (response) => {
+    console.log(response);
+    setRegisterData({
+      ...registerData,
+      fullName: response.name,
+      email: response.email,
+    });
   };
 
   if (register.registerResponse.success) {
@@ -71,6 +79,7 @@ function Register({ handleClose }) {
           <Grid item xs={12} lg={6}>
             <TextField
               label="Họ tên"
+              value={registerData.fullName || ""}
               name="fullname"
               onChange={handleChange}
               style={{ width: "80%" }}
@@ -80,6 +89,7 @@ function Register({ handleClose }) {
             <br />
             <TextField
               label="Tuổi"
+              value={registerData.age || ""}
               variant="outlined"
               name="age"
               type="number"
@@ -112,6 +122,7 @@ function Register({ handleClose }) {
             <TextField
               label="Email"
               name="email"
+              value={registerData.email || ""}
               onChange={handleChange}
               style={{ width: "80%" }}
               type="email"
@@ -123,6 +134,7 @@ function Register({ handleClose }) {
           <Grid item xs={12} lg={6}>
             <TextField
               label="Tên đăng nhập"
+              value={registerData.username || ""}
               style={{ width: "80%" }}
               name="username"
               onChange={handleChange}
@@ -132,6 +144,7 @@ function Register({ handleClose }) {
             <br />
             <TextField
               label="Mật khẩu"
+              value={registerData.password || ""}
               name="password"
               type="password"
               onChange={handleChange}
@@ -174,12 +187,12 @@ function Register({ handleClose }) {
           </p>
           <p>Hoặc đăng ký với:</p>
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <IconButton>
-              <img src={google} alt="google" style={{ margin: 2 }} />
-            </IconButton>
-            <IconButton>
-              <img src={facebook} alt="facebook" style={{ margin: 2 }} />
-            </IconButton>{" "}
+            <ReactFacebookLogin
+              appId="370532724120723"
+              fields="name,email,picture"
+              callback={responseFacebook}
+              icon={facebook}
+            />
           </div>
         </div>
       </DialogContentText>

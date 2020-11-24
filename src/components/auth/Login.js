@@ -15,12 +15,27 @@ import { Redirect } from "react-router-dom";
 import Register from "./Register";
 import { requestLogin } from "../redux/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
+import FacebookLogin from "react-facebook-login";
+import Axios from "axios";
 
-function Login(props) {
+function Login({ props }) {
   const [open, setOpen] = useState(false);
   const [loginData, setLogData] = useState({});
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const responseFacebook = (response) => {
+    Axios.post("https://robin-devc.herokuapp.com/users/facebook", {
+      email: response.email,
+    })
+      .then((res) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        alert("No data found");
+        console.log(error.response);
+      });
   };
 
   const login = useSelector((state) => state.users);
@@ -45,6 +60,9 @@ function Login(props) {
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   if (login.loginResponse.success) {
+    window.localStorage.setItem("id", login.loginResponse.id);
+    window.localStorage.setItem("username", login.loginResponse.username);
+
     return <Redirect to="/" />;
   }
 
@@ -97,7 +115,6 @@ function Login(props) {
           >
             Đăng nhập
           </Button>
-          <p>{login.loginResponse.success ? "Xong" : "Loading"}</p>
           <p>
             Bạn chưa có tài khoản?{" "}
             <b
@@ -118,12 +135,12 @@ function Login(props) {
           </Dialog>
           <p>Hoặc đăng nhập với:</p>
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <IconButton>
-              <img src={google} alt="google" style={{ margin: 2 }} />
-            </IconButton>
-            <IconButton>
-              <img src={facebook} alt="facebook" style={{ margin: 2 }} />
-            </IconButton>{" "}
+            <FacebookLogin
+              appId="370532724120723"
+              fields="name,email,picture"
+              callback={responseFacebook}
+              icon={image}
+            />
           </div>
         </div>
       </div>

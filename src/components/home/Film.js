@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchFilm } from "../redux/actions/films";
 import { createSelector } from "reselect";
 import { Rating } from "@material-ui/lab";
+import Axios from "axios";
 const Film = ({ id }) => {
   const [rate, setRate] = useState(0);
   const getFilmFromStore = (state) => state.films;
@@ -17,8 +18,24 @@ const Film = ({ id }) => {
     dispatch(fetchFilm(id));
   }, [dispatch]);
   const handleChangeRate = (event, newValue) => {
-    console.log(newValue);
-    setRate(newValue);
+    if (!window.localStorage.getItem("id")) {
+      alert("You must login to review this movie!");
+    } else {
+      console.log(newValue);
+      console.log(id);
+      console.log(window.localStorage.getItem("id"));
+      Axios.post(`https://robin-devc.herokuapp.com/films/watched/${id}`, {
+        user: window.localStorage.getItem("id"),
+        rating: newValue,
+      })
+        .then((response) => {
+          console.log(response.data);
+          setRate(newValue);
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    }
   };
   return (
     <DialogContent>
@@ -29,6 +46,7 @@ const Film = ({ id }) => {
             <p>{review}</p>
             <Rating
               name="simple-controlled"
+              precision={0.5}
               value={rate}
               onChange={handleChangeRate}
             />

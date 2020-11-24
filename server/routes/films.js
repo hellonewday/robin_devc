@@ -20,7 +20,7 @@ router.get("/:id", (req, res) => {
 
 router.post("/watched/:id", (req, res) => {
   connection.query(
-    `SELECT * FROM WatchedFilm WHERE user = ${req.body.user} AND film = ${req.body.id}`,
+    `SELECT * FROM WatchedFilm WHERE user = ${req.body.user} AND film = ${req.params.id}`,
     (error, result) => {
       if (error) return res.status(400).json({ success: false, error });
       else if (result.length === 0) {
@@ -28,7 +28,14 @@ router.post("/watched/:id", (req, res) => {
           `INSERT INTO watchedFilm values (${req.body.user},${req.params.id},${req.body.rating})`,
           (error, response) => {
             if (error) return res.status(400).json({ success: false, error });
-            else return res.status(200).json({ success: true, response });
+            else
+              return res
+                .status(200)
+                .json({
+                  message: "Add new successfully",
+                  success: true,
+                  response,
+                });
           }
         );
       } else {
@@ -36,7 +43,14 @@ router.post("/watched/:id", (req, res) => {
           `update watchedfilm set rating = ${req.body.rating} where user = ${req.body.user}`,
           (error, response) => {
             if (error) return res.status(400).json({ success: false, error });
-            else return res.status(200).json({ success: true, response });
+            else
+              return res
+                .status(200)
+                .json({
+                  message: "Update successfully",
+                  success: true,
+                  response,
+                });
           }
         );
       }
