@@ -11,7 +11,7 @@ const middleware = createSagaNiddleware();
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["users"],
+  blacklist: ["users","films.film","films.searchFilms"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

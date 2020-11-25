@@ -140,6 +140,7 @@ function Login({ props }) {
               fields="name,email,picture"
               callback={responseFacebook}
               icon={image}
+              textButton="Đăng nhập bằng Facebook"
             />
           </div>
         </div>

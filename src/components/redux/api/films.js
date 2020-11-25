@@ -19,3 +19,15 @@ export const fetchApiFilm = async (id) => {
     console.log(error);
   }
 };
+
+export const searchApiFilms = async (query) => {
+  try {
+    const response = await fetch(
+      `https://robin-devc.herokuapp.com/films?q=${query}`
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};

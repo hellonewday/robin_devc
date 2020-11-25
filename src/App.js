@@ -8,8 +8,9 @@ function App({ props }) {
   useEffect(() => {
     console.log(props);
   }, []);
+  
   const handleLogout = () => {
-    window.localStorage.removeItem("logged");
+    window.localStorage.removeItem("id");
     window.location.reload();
   };
 

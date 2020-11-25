@@ -3,6 +3,8 @@ const {
   FETCH_FILMS_SUCCESS,
   FETCH_FILM,
   FETCH_FILM_SUCCESS,
+  SEARCH_FILMS,
+  SEARCH_FILM_SUCCESS,
 } = require("./types");
 
 export const fetchFilms = () => {
@@ -28,6 +30,20 @@ export const fetchFilm = (id) => {
 export const receiveFilm = (data) => {
   return {
     type: FETCH_FILM_SUCCESS,
+    data,
+  };
+};
+
+export const searchFilms = (query) => {
+  return {
+    type: SEARCH_FILMS,
+    query,
+  };
+};
+
+export const queryFilms = (data) => {
+  return {
+    type: SEARCH_FILM_SUCCESS,
     data,
   };
 };

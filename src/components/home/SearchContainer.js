@@ -1,11 +1,39 @@
-import { Grid, TextField, Typography } from "@material-ui/core";
-import React from "react";
+import {
+  Dialog,
+  DialogContent,
+  Grid,
+  IconButton,
+  TextField,
+  Typography,
+} from "@material-ui/core";
+import React, { useState } from "react";
 import image1 from "../../images/img1.png";
 import image2 from "../../images/img2.png";
 import image3 from "../../images/img3.png";
 import SearchIcon from "@material-ui/icons/Search";
+import { useDispatch, useSelector } from "react-redux";
+import { searchFilms } from "../redux/actions/films";
 
 function SearchContainer(props) {
+  const [search, setSearch] = useState("");
+  const [open, setOpen] = useState(false);
+  const films = useSelector((state) => state.films);
+
+  const dispatch = useDispatch();
+
+  const handleChange = (event) => {
+    setSearch(event.target.value);
+  };
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    setOpen(true);
+    dispatch(searchFilms(search));
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div style={{ position: "relative" }}>
       <Grid container>
@@ -60,6 +88,8 @@ function SearchContainer(props) {
           <TextField
             variant="outlined"
             fullWidth
+            name="query"
+            onChange={handleChange}
             placeholder="Tìm kiếm bộ phim yêu thích"
             style={{
               backgroundColor: "white",
@@ -68,9 +98,49 @@ function SearchContainer(props) {
               borderRadius: 10,
             }}
           />
-          <SearchIcon  style={{ position: "absolute", right: 20, top: 25, fontSize: 30 }} />
+          <IconButton
+            onClick={handleClick}
+            style={{ position: "absolute", right: 20, top: 15 }}
+          >
+            <SearchIcon style={{ fontSize: 30 }} />
+          </IconButton>
         </div>
       </div>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogContent>
+          <Grid container spacing={2}>
+            {films.searchFilms.map((item) => {
+              return (
+                <Grid
+                  item
+                  xs={12}
+                  lg={2}
+                  key={item.id}
+                  style={{ margin: "20px 0px" }}
+                >
+                  <img
+                    src={item.images}
+                    style={{ width: "100px", height: "123.39px" }}
+                    alt={item.Title}
+                  />
+                  <Typography
+                    onClick={() => this.setState({ open: true, id: item.id })}
+                    variant="h5"
+                    style={{
+                      color: "#E35708",
+                      fontSize: 15,
+                      fontWeight: 600,
+                      marginTop: 10,
+                    }}
+                  >
+                    {item.titlesVN}
+                  </Typography>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
